@@ -1,9 +1,11 @@
 from dotenv import load_dotenv
 load_dotenv()  # must run before any agent module is imported
 
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from core.gan_loop import run
@@ -12,7 +14,7 @@ app = FastAPI(title="LLM GAN")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -40,3 +42,9 @@ async def run_gan(req: RunRequest):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+# Serve the React build in production (when client/dist exists)
+_dist = Path(__file__).parent / "client" / "dist"
+if _dist.exists():
+    app.mount("/", StaticFiles(directory=_dist, html=True), name="spa")
