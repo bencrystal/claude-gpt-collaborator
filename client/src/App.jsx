@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import LandingPage from "./components/LandingPage.jsx";
 import PromptForm from "./components/PromptForm.jsx";
 import RoundView from "./components/RoundView.jsx";
 import Synthesis from "./components/Synthesis.jsx";
@@ -15,8 +16,13 @@ const INITIAL_STATE = {
 };
 
 export default function App() {
+  const [unlocked, setUnlocked] = useState(
+    () => sessionStorage.getItem("unlocked") === "1"
+  );
   const [state, setState] = useState(INITIAL_STATE);
   const abortRef = useRef(null);
+
+  if (!unlocked) return <LandingPage onUnlock={() => setUnlocked(true)} />;
 
   async function handleSubmit({ prompt, numRounds }) {
     // Cancel any in-flight request
