@@ -1,0 +1,88 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.2rem 0.75rem;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .columns { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.claudeCard { border-top: 3px solid var(--claude); }
+.gptCard    { border-top: 3px solid var(--gpt); }
+
+.cardHeader {
+  padding: 0.6rem 0.9rem 0;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.claudeBadge { background: #3b2200; color: var(--claude); }
+.gptBadge    { background: #002920; color: var(--gpt); }
+
+.cardBody {
+  padding: 0.75rem 1rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.cardBody p  { margin-bottom: 0.6rem; }
+.cardBody h1,
+.cardBody h2,
+.cardBody h3 { margin: 0.8rem 0 0.3rem; font-size: 0.95rem; }
+.cardBody ul,
+.cardBody ol { padding-left: 1.2rem; margin-bottom: 0.6rem; }
+.cardBody code {
+  background: #252530;
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  font-size: 0.82rem;
+}
+.cardBody pre {
+  background: #252530;
+  border-radius: 6px;
+  padding: 0.75rem;
+  overflow-x: auto;
+  margin-bottom: 0.6rem;
+}
+.cardBody pre code { background: none; padding: 0; }
+
+.waiting {
+  color: var(--muted);
+  font-style: italic;
+}

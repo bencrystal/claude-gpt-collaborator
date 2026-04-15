@@ -1,0 +1,52 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.2rem 0.75rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid #4f6ef7;
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+.card p  { margin-bottom: 0.7rem; }
+.card h1,
+.card h2,
+.card h3 { margin: 1rem 0 0.4rem; }
+.card ul,
+.card ol { padding-left: 1.3rem; margin-bottom: 0.7rem; }
+.card code {
+  background: #252530;
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  font-size: 0.85rem;
+}
+.card pre {
+  background: #252530;
+  border-radius: 6px;
+  padding: 0.75rem;
+  overflow-x: auto;
+  margin-bottom: 0.7rem;
+}
+.card pre code { background: none; padding: 0; }
