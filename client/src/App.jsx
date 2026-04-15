@@ -35,8 +35,9 @@ export default function App() {
       });
 
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail ?? "Request failed");
+        let msg = "Request failed";
+        try { msg = (await res.json()).detail ?? msg; } catch {}
+        throw new Error(msg);
       }
 
       const reader = res.body.getReader();
