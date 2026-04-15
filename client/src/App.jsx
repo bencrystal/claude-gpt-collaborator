@@ -8,7 +8,8 @@ import styles from "./App.module.css";
 const INITIAL_STATE = {
   running: false,
   status: "",
-  rounds: [],   // [{round, claude, gpt}]
+  rounds: [],        // [{round, claude, gpt}]
+  collapsedRounds: new Set(),
   synthesis: "",
   error: "",
 };
@@ -66,14 +67,19 @@ export default function App() {
   function handleEvent(event) {
     setState((s) => {
       switch (event.type) {
-        case "round_start":
+        case "round_start": {
+          // Collapse the previous round when the next one begins
+          const collapsedRounds = new Set(s.collapsedRounds);
+          if (event.round > 0) collapsedRounds.add(event.round - 1);
           return {
             ...s,
+            collapsedRounds,
             status:
               event.round === 0
                 ? "Round 0 — initial responses…"
                 : `Round ${event.round} — cross-critique…`,
           };
+        }
 
         case "response": {
           const rounds = [...s.rounds];
@@ -90,12 +96,28 @@ export default function App() {
         case "synthesis":
           return { ...s, status: "Synthesizing…", synthesis: event.content };
 
-        case "done":
-          return { ...s, running: false, status: "Complete" };
+        case "done": {
+          // Collapse all rounds except the last when done
+          const collapsedRounds = new Set(s.collapsedRounds);
+          s.rounds.forEach((r) => {
+            if (r.round < s.rounds.length - 1) collapsedRounds.add(r.round);
+          });
+          return { ...s, running: false, status: "Complete", collapsedRounds };
+        }
 
         default:
           return s;
       }
+    });
+  }
+
+  function toggleRound(roundNum) {
+    setState((s) => {
+      const collapsedRounds = new Set(s.collapsedRounds);
+      collapsedRounds.has(roundNum)
+        ? collapsedRounds.delete(roundNum)
+        : collapsedRounds.add(roundNum);
+      return { ...s, collapsedRounds };
     });
   }
 
@@ -123,7 +145,12 @@ export default function App() {
         )}
 
         {state.rounds.map((round) => (
-          <RoundView key={round.round} round={round} />
+          <RoundView
+            key={round.round}
+            round={round}
+            collapsed={state.collapsedRounds.has(round.round)}
+            onToggle={() => toggleRound(round.round)}
+          />
         ))}
 
         {state.synthesis && <Synthesis content={state.synthesis} />}

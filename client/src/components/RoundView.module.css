@@ -12,12 +12,41 @@
   color: var(--muted);
 }
 
+.headingBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.headingBtn:hover .pill {
+  border-color: #555;
+}
+
 .pill {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 0.2rem 0.75rem;
+  transition: border-color 0.15s;
 }
+
+.chevron {
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.chevronUp   { transform: rotate(-90deg); }
+.chevronDown { transform: rotate(90deg); }
 
 .columns {
   display: grid;
@@ -81,6 +110,22 @@
   margin-bottom: 0.6rem;
 }
 .cardBody pre code { background: none; padding: 0; }
+
+.cardBodyPreview {
+  max-height: 7.5rem; /* ~5 lines at 1.7 line-height */
+  overflow: hidden;
+  position: relative;
+}
+
+.fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+  background: linear-gradient(to bottom, transparent, var(--surface));
+  pointer-events: none;
+}
 
 .waiting {
   color: var(--muted);
