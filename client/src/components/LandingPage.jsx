@@ -27,12 +27,12 @@ export default function LandingPage({ onUnlock }) {
         return {
           x: rand(size, canvas.width - size),
           y: rand(size, canvas.height - size),
-          dx: (rand(1.5, 3.5)) * (Math.random() < 0.5 ? 1 : -1),
-          dy: (rand(1.5, 3.5)) * (Math.random() < 0.5 ? 1 : -1),
+          dx: (rand(0.4, 1.2)) * (Math.random() < 0.5 ? 1 : -1),
+          dy: (rand(0.4, 1.2)) * (Math.random() < 0.5 ? 1 : -1),
           size,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
           rotation: rand(0, Math.PI * 2),
-          rotSpeed: rand(0.01, 0.04) * (Math.random() < 0.5 ? 1 : -1),
+          rotSpeed: rand(0.003, 0.012) * (Math.random() < 0.5 ? 1 : -1),
         };
       });
     }
