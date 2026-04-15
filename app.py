@@ -22,7 +22,7 @@ app.add_middleware(
 
 class RunRequest(BaseModel):
     prompt: str
-    num_rounds: int = 2
+    num_rounds: int = 1
 
 
 @app.post("/run")

@@ -3,7 +3,7 @@ import styles from "./PromptForm.module.css";
 
 export default function PromptForm({ onSubmit, running, onStop }) {
   const [prompt, setPrompt] = useState("");
-  const [numRounds, setNumRounds] = useState(2);
+  const [numRounds, setNumRounds] = useState(1);
 
   function handleSubmit(e) {
     e.preventDefault();
