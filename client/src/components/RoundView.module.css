@@ -26,9 +26,7 @@
   text-transform: inherit;
 }
 
-.headingBtn:hover .pill {
-  border-color: #555;
-}
+.headingBtn:hover .pill { border-color: #555; }
 
 .pill {
   background: var(--surface);
@@ -44,32 +42,39 @@
   transition: transform 0.2s;
   display: inline-block;
 }
-
 .chevronUp   { transform: rotate(-90deg); }
 .chevronDown { transform: rotate(90deg); }
 
+/* ── Columns ── */
 .columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
-
 @media (max-width: 640px) {
   .columns { grid-template-columns: 1fr; }
 }
 
+/* ── Card ── */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
 }
-
 .claudeCard { border-top: 3px solid var(--claude); }
 .gptCard    { border-top: 3px solid var(--gpt); }
 
+/* ── Card header (always visible) ── */
 .cardHeader {
-  padding: 0.6rem 0.9rem 0;
+  padding: 0.65rem 0.9rem 0;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .badge {
@@ -79,15 +84,90 @@
   padding: 0.15rem 0.5rem;
   letter-spacing: 0.04em;
 }
-
 .claudeBadge { background: #3b2200; color: var(--claude); }
 .gptBadge    { background: #002920; color: var(--gpt); }
 
+/* ── Score ── */
+.score {
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0.03em;
+}
+.scoreHigh { background: #0e2e1a; color: #4ade80; }
+.scoreMid  { background: #2e2300; color: #fbbf24; }
+.scoreLow  { background: #2e0e0e; color: #f87171; }
+
+/* ── Missing list ── */
+.missing {
+  margin-bottom: 0.6rem;
+}
+
+.missingLabel {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+
+.missingList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.missingList li {
+  font-size: 0.8rem;
+  color: #b0b0c0;
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.45;
+}
+
+.missingList li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  top: 0.05em;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 -0.9rem 0;
+}
+
+/* ── Card body (collapsible) ── */
 .cardBody {
   padding: 0.75rem 1rem 1rem;
   font-size: 0.875rem;
   line-height: 1.7;
   overflow-wrap: break-word;
+}
+
+.cardBodyPreview {
+  max-height: 7.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+  background: linear-gradient(to bottom, transparent, var(--surface));
+  pointer-events: none;
 }
 
 .cardBody p  { margin-bottom: 0.6rem; }
@@ -110,22 +190,6 @@
   margin-bottom: 0.6rem;
 }
 .cardBody pre code { background: none; padding: 0; }
-
-.cardBodyPreview {
-  max-height: 7.5rem; /* ~5 lines at 1.7 line-height */
-  overflow: hidden;
-  position: relative;
-}
-
-.fade {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3rem;
-  background: linear-gradient(to bottom, transparent, var(--surface));
-  pointer-events: none;
-}
 
 .waiting {
   color: var(--muted);

@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI
+import json
 import os
 
 client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -29,7 +30,8 @@ async def generate_critique_and_improve(
     your_previous: str,
     other_previous: str,
     other_name: str,
-) -> str:
+) -> dict:
+    """Returns {"score": int, "missing": [str], "response": str}"""
     user_message = f"""Original prompt:
 {original_prompt}
 
@@ -40,25 +42,28 @@ Your previous response:
 {other_previous}
 
 Instructions:
-1. Identify specific points, perspectives, or nuances that {other_name} captured that were absent or underdeveloped in your response.
-2. Also note what you covered well that should be retained.
-3. Produce an improved response that is more complete than either previous response — incorporating the best of both while adding any further depth you can.
+1. Score {other_name}'s response out of 10 for how completely it answers the original prompt.
+2. List 3-5 specific things that were absent or underdeveloped in {other_name}'s response.
+3. Produce an improved response that is more complete than either previous response.
 
-Output only the improved response (no meta-commentary about the process)."""
+Return a JSON object with exactly these keys:
+- "score": integer 1-10
+- "missing": array of 3-5 short strings
+- "response": your full improved response as a string"""
 
     response = await client.chat.completions.create(
         model=MODEL,
         max_tokens=4096,
+        response_format={"type": "json_object"},
         messages=[
             {
                 "role": "system",
                 "content": (
                     "You are a thorough, expert assistant engaged in a collaborative refinement process. "
-                    "You will review another model's response, identify what it captured that you missed, "
-                    "and produce a strictly better, more complete response."
+                    "Always respond with valid JSON containing 'score', 'missing', and 'response' keys."
                 ),
             },
             {"role": "user", "content": user_message},
         ],
     )
-    return response.choices[0].message.content
+    return json.loads(response.choices[0].message.content)

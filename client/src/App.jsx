@@ -84,12 +84,19 @@ export default function App() {
         case "response": {
           const rounds = [...s.rounds];
           const idx = rounds.findIndex((r) => r.round === event.round);
+          const emptyModel = { content: "", score: null, missing: [] };
           if (idx === -1) {
-            rounds.push({ round: event.round, claude: "", gpt: "" });
+            rounds.push({ round: event.round, claude: { ...emptyModel }, gpt: { ...emptyModel } });
           }
-          const entry = { ...rounds[idx === -1 ? rounds.length - 1 : idx] };
-          entry[event.model] = event.content;
-          rounds[idx === -1 ? rounds.length - 1 : idx] = entry;
+          const entryIdx = idx === -1 ? rounds.length - 1 : idx;
+          rounds[entryIdx] = {
+            ...rounds[entryIdx],
+            [event.model]: {
+              content: event.content,
+              score: event.score,
+              missing: event.missing ?? [],
+            },
+          };
           return { ...s, rounds };
         }
 
