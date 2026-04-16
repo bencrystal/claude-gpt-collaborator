@@ -1,24 +1,29 @@
 .layout {
   max-width: 960px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 3rem 1.5rem 5rem;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .header h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
+  background: linear-gradient(135deg, var(--text) 60%, var(--muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {
   color: var(--muted);
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   font-size: 0.9rem;
+  font-weight: 400;
 }
 
 .main {
@@ -28,9 +33,9 @@
 }
 
 .error {
-  background: #3b1212;
-  border: 1px solid #7f2121;
-  color: #f87171;
+  background: rgba(255, 69, 58, 0.12);
+  border: 1px solid rgba(255, 69, 58, 0.3);
+  color: var(--red);
   border-radius: var(--radius);
   padding: 0.75rem 1rem;
   font-size: 0.875rem;

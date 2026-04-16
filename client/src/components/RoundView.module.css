@@ -5,10 +5,10 @@
 }
 
 .heading {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   color: var(--muted);
 }
 
@@ -26,14 +26,14 @@
   text-transform: inherit;
 }
 
-.headingBtn:hover .pill { border-color: #555; }
+.headingBtn:hover .pill { border-color: rgba(255,255,255,0.2); }
 
 .pill {
-  background: var(--surface);
+  background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 980px;
   padding: 0.2rem 0.75rem;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s;
 }
 
 .chevron {
@@ -61,13 +61,14 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  box-shadow: var(--shadow);
 }
-.claudeCard { border-top: 3px solid var(--claude); }
-.gptCard    { border-top: 3px solid var(--gpt); }
+.claudeCard { border-top: 2px solid var(--claude); }
+.gptCard    { border-top: 2px solid var(--gpt); }
 
-/* ── Card header (always visible) ── */
+/* ── Card header ── */
 .cardHeader {
-  padding: 0.65rem 0.9rem 0;
+  padding: 0.75rem 1rem 0;
 }
 
 .headerRow {
@@ -78,26 +79,26 @@
 }
 
 .badge {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  border-radius: 4px;
-  padding: 0.15rem 0.5rem;
+  border-radius: 980px;
+  padding: 0.18rem 0.6rem;
   letter-spacing: 0.04em;
 }
-.claudeBadge { background: #3b2200; color: var(--claude); }
-.gptBadge    { background: #002920; color: var(--gpt); }
+.claudeBadge { background: rgba(255,159,10,0.15); color: var(--claude); }
+.gptBadge    { background: rgba(48,209,88,0.15);  color: var(--gpt); }
 
 /* ── Score ── */
 .score {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  border-radius: 4px;
-  padding: 0.15rem 0.45rem;
+  border-radius: 980px;
+  padding: 0.18rem 0.55rem;
   letter-spacing: 0.03em;
 }
-.scoreHigh { background: #0e2e1a; color: #4ade80; }
-.scoreMid  { background: #2e2300; color: #fbbf24; }
-.scoreLow  { background: #2e0e0e; color: #f87171; }
+.scoreHigh { background: rgba(48,209,88,0.15);  color: #30d158; }
+.scoreMid  { background: rgba(255,214,10,0.15); color: #ffd60a; }
+.scoreLow  { background: rgba(255,69,58,0.15);  color: var(--red); }
 
 /* ── Missing list ── */
 .missing {
@@ -106,7 +107,7 @@
 
 .missingLabel {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -125,32 +126,32 @@
 
 .missingList li {
   font-size: 0.8rem;
-  color: #b0b0c0;
+  color: var(--muted);
   padding-left: 1rem;
   position: relative;
   line-height: 1.45;
 }
 
 .missingList li::before {
-  content: "▸";
+  content: "›";
   position: absolute;
   left: 0;
   color: var(--muted);
-  font-size: 0.7rem;
-  top: 0.05em;
+  font-size: 0.85rem;
+  top: 0;
 }
 
 .divider {
   height: 1px;
   background: var(--border);
-  margin: 0 -0.9rem 0;
+  margin: 0 -1rem 0;
 }
 
-/* ── Card body (collapsible) ── */
+/* ── Card body ── */
 .cardBody {
-  padding: 0.75rem 1rem 1rem;
+  padding: 0.85rem 1rem 1rem;
   font-size: 0.875rem;
-  line-height: 1.7;
+  line-height: 1.75;
   overflow-wrap: break-word;
 }
 
@@ -177,15 +178,15 @@
 .cardBody ul,
 .cardBody ol { padding-left: 1.2rem; margin-bottom: 0.6rem; }
 .cardBody code {
-  background: #252530;
-  border-radius: 3px;
-  padding: 0.1em 0.35em;
+  background: var(--surface2);
+  border-radius: 5px;
+  padding: 0.1em 0.4em;
   font-size: 0.82rem;
 }
 .cardBody pre {
-  background: #252530;
-  border-radius: 6px;
-  padding: 0.75rem;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
   overflow-x: auto;
   margin-bottom: 0.6rem;
 }
