@@ -84,7 +84,7 @@ export default function PromptForm({ onSubmit, running, onStop }) {
             ref={fileInputRef}
             type="file"
             multiple
-            accept="image/*,text/*,.pdf,.csv,.json,.md"
+            accept="image/*,text/*,.pdf,.csv,.json,.md,.xls,.xlsx"
             style={{ display: "none" }}
             onChange={handleFileChange}
             disabled={running}

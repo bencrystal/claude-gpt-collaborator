@@ -1,11 +1,33 @@
 from openai import AsyncOpenAI
 import base64
+import io
 import json
 import os
 
 client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 MODEL = "gpt-4o"
+
+
+_EXCEL_TYPES = {
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+}
+
+
+def _excel_to_text(data_b64: str, name: str) -> str:
+    """Convert a base64-encoded Excel file to a CSV-like text representation."""
+    import openpyxl
+    raw = base64.b64decode(data_b64)
+    wb = openpyxl.load_workbook(io.BytesIO(raw), data_only=True)
+    parts = []
+    for sheet_name in wb.sheetnames:
+        ws = wb[sheet_name]
+        rows = []
+        for row in ws.iter_rows(values_only=True):
+            rows.append(",".join("" if v is None else str(v) for v in row))
+        parts.append(f"[Sheet: {sheet_name}]\n" + "\n".join(rows))
+    return "\n\n".join(parts)
 
 
 def _build_content_parts(prompt: str, files: list[dict]) -> list:
@@ -20,6 +42,12 @@ def _build_content_parts(prompt: str, files: list[dict]) -> list:
                 "type": "image_url",
                 "image_url": {"url": f"data:{mt};base64,{f['data']}"},
             })
+        elif mt in _EXCEL_TYPES or f["name"].lower().endswith((".xls", ".xlsx")):
+            try:
+                text = _excel_to_text(f["data"], f["name"])
+            except Exception as e:
+                text = f"[Could not parse Excel file: {e}]"
+            text_file_parts.append(f"=== {f['name']} ===\n{text}")
         else:
             try:
                 text = base64.b64decode(f["data"]).decode("utf-8", errors="replace")
