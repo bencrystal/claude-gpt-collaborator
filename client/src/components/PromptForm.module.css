@@ -78,3 +78,68 @@
   background: #7f2121;
   color: #f87171;
 }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.attachBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.attachBtn:hover:not(:disabled) {
+  border-color: #555;
+  color: var(--text);
+}
+
+.attachBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.fileList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.fileChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.removeFile {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.removeFile:hover {
+  color: #f87171;
+}
+
+.removeFile:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

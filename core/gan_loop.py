@@ -5,7 +5,7 @@ import json
 from agents import claude_agent, openai_agent
 
 
-async def run(prompt: str, num_rounds: int = 2) -> AsyncIterator[str]:
+async def run(prompt: str, num_rounds: int = 2, files: list[dict] = None) -> AsyncIterator[str]:
     """
     Event shapes:
       {"type": "round_start", "round": 0}
@@ -21,12 +21,14 @@ async def run(prompt: str, num_rounds: int = 2) -> AsyncIterator[str]:
     # rounds stores raw content strings for passing to the next critique call
     rounds: list[dict] = []
 
+    attachments = files or []
+
     # ── Round 0: both models answer independently ─────────────────────────────
     yield emit({"type": "round_start", "round": 0})
 
     claude_resp, gpt_resp = await asyncio.gather(
-        claude_agent.generate_initial(prompt),
-        openai_agent.generate_initial(prompt),
+        claude_agent.generate_initial(prompt, attachments),
+        openai_agent.generate_initial(prompt, attachments),
     )
 
     rounds.append({"claude": claude_resp, "gpt": gpt_resp})

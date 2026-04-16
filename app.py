@@ -20,9 +20,16 @@ app.add_middleware(
 )
 
 
+class FileAttachment(BaseModel):
+    name: str
+    media_type: str
+    data: str  # base64-encoded
+
+
 class RunRequest(BaseModel):
     prompt: str
     num_rounds: int = 1
+    files: list[FileAttachment] = []
 
 
 @app.post("/run")
@@ -32,8 +39,9 @@ async def run_gan(req: RunRequest):
     if not (1 <= req.num_rounds <= 5):
         raise HTTPException(status_code=400, detail="num_rounds must be between 1 and 5")
 
+    files = [f.model_dump() for f in req.files]
     return StreamingResponse(
-        run(req.prompt, req.num_rounds),
+        run(req.prompt, req.num_rounds, files),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )

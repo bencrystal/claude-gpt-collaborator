@@ -24,7 +24,7 @@ export default function App() {
 
   if (!unlocked) return <LandingPage onUnlock={() => setUnlocked(true)} />;
 
-  async function handleSubmit({ prompt, numRounds }) {
+  async function handleSubmit({ prompt, numRounds, files = [] }) {
     // Cancel any in-flight request
     abortRef.current?.abort();
     const ctrl = new AbortController();
@@ -36,7 +36,7 @@ export default function App() {
       const res = await fetch("/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, num_rounds: numRounds }),
+        body: JSON.stringify({ prompt, num_rounds: numRounds, files }),
         signal: ctrl.signal,
       });
 

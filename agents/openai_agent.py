@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI
+import base64
 import json
 import os
 
@@ -7,7 +8,35 @@ client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 MODEL = "gpt-4o"
 
 
-async def generate_initial(prompt: str) -> str:
+def _build_content_parts(prompt: str, files: list[dict]) -> list:
+    """Build OpenAI message content parts from prompt + file attachments."""
+    parts = []
+    text_file_parts = []
+
+    for f in files:
+        mt = f["media_type"]
+        if mt.startswith("image/"):
+            parts.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:{mt};base64,{f['data']}"},
+            })
+        else:
+            try:
+                text = base64.b64decode(f["data"]).decode("utf-8", errors="replace")
+            except Exception:
+                text = f["data"]
+            text_file_parts.append(f"=== {f['name']} ===\n{text}")
+
+    full_text = prompt
+    if text_file_parts:
+        full_text = "\n\n".join(text_file_parts) + "\n\n" + prompt
+
+    parts.append({"type": "text", "text": full_text})
+    return parts
+
+
+async def generate_initial(prompt: str, files: list[dict] = None) -> str:
+    content = _build_content_parts(prompt, files or [])
     response = await client.chat.completions.create(
         model=MODEL,
         max_tokens=4096,
@@ -19,7 +48,7 @@ async def generate_initial(prompt: str) -> str:
                     "Respond to the prompt as completely and insightfully as possible."
                 ),
             },
-            {"role": "user", "content": prompt},
+            {"role": "user", "content": content},
         ],
     )
     return response.choices[0].message.content

@@ -1,4 +1,5 @@
 import anthropic
+import base64
 import json
 import os
 
@@ -28,17 +29,47 @@ _CRITIQUE_SCHEMA = {
 }
 
 
-async def generate_initial(prompt: str) -> str:
+def _build_content_blocks(prompt: str, files: list[dict]) -> list:
+    """Build Anthropic message content blocks from prompt + file attachments."""
+    blocks = []
+    text_file_parts = []
+
+    for f in files:
+        mt = f["media_type"]
+        if mt.startswith("image/"):
+            blocks.append({
+                "type": "image",
+                "source": {"type": "base64", "media_type": mt, "data": f["data"]},
+            })
+        else:
+            # Decode text-based files and include as plain text
+            try:
+                text = base64.b64decode(f["data"]).decode("utf-8", errors="replace")
+            except Exception:
+                text = f["data"]
+            text_file_parts.append(f"=== {f['name']} ===\n{text}")
+
+    # Build the final text block combining file text + prompt
+    full_text = prompt
+    if text_file_parts:
+        full_text = "\n\n".join(text_file_parts) + "\n\n" + prompt
+
+    blocks.append({"type": "text", "text": full_text})
+    return blocks
+
+
+async def generate_initial(prompt: str, files: list[dict] = None) -> str:
     system = (
         "You are a thorough, expert assistant. "
         "Respond to the prompt as completely and insightfully as possible."
     )
+    content = _build_content_blocks(prompt, files or [])
     response = await client.messages.create(
         model=MODEL,
         max_tokens=16000,
         thinking={"type": "adaptive"},
         system=system,
-        messages=[{"role": "user", "content": prompt}],
+        messages=[{"role": "user", "content": content}],
     )
     return next(b.text for b in response.content if b.type == "text")
 
